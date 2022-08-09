@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./Detail.moudle.css";
 function Detail() {
   const { id } = useParams(); // id를 찾는다!
   const [loading, setLoading] = useState(true);
@@ -10,10 +11,10 @@ function Detail() {
     const json = await (
       await fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`)
     ).json();
-    setLoading(false);
     setDetails(() => json.data.movie);
     setHours(parseInt(details.runtime / 60));
     setMinutes(details.runtime - hours * 60);
+    setLoading(false);
   }, [hours, minutes]);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function Detail() {
   }, [getMovie]);
   return (
     <div>
-      {loading ? (
+      {loading && hours === 0 && minutes === 0 ? (
         <h1>Loading...</h1>
       ) : (
         <div>

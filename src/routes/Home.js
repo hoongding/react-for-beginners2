@@ -1,9 +1,11 @@
-import Movie from "../components/Movie";
 import { useState, useEffect } from "react";
+import Movie from "../components/Movie";
+import styles from "./Home.module.css";
 
 function Home() {
   const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
+
   const getMovies = async () => {
     const json = await (
       await fetch(
@@ -17,11 +19,13 @@ function Home() {
     getMovies();
   }, []);
   return (
-    <div>
+    <div className={styles.container}>
       {loading ? (
-        <h1>Loading...</h1>
+        <div className={styles.loader}>
+          <span>Loading...</span>
+        </div>
       ) : (
-        <div>
+        <div className={styles.movies}>
           {movies.map((movie) => (
             <Movie
               key={movie.id} // key는 리액트에서만 map안에서 component들을 render할 때 사용
@@ -30,6 +34,7 @@ function Home() {
               title={movie.title}
               summary={movie.summary}
               genres={movie.genres}
+              year={movie.year}
             />
           ))}
         </div>

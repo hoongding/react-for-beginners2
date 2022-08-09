@@ -1,19 +1,28 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-function Movie({ id, coverImg, title, summary, genres }) {
+import styles from "./Movie.module.css";
+function Movie({ id, coverImg, title, summary, genres, year }) {
+  const [hover, setHover] = useState(false);
   return (
-    <div>
-      <hr />
-      <img src={coverImg} alt={title} />
-      <h2>
-        <Link to={`movie/${id}`}>{title}</Link>
-      </h2>
-      <p>{summary}</p>
-      <ul>
-        {genres.map((g) => (
-          <li key={g}>{g}</li>
-        ))}
-      </ul>
+    <div
+      className={!hover ? styles.movie : styles.movie2}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <img src={coverImg} alt={title} className={styles.movie__img} />
+      <div>
+        <h2 className={styles.movie__title}>
+          <Link to={`movie/${id}`}>{title}</Link>
+        </h2>
+        <h3 className={styles.movie__year}>{year}</h3>
+        <p>{summary.length > 240 ? `${summary.slice(0, 240)}...` : summary}</p>
+        <ul className={styles.movie__genres}>
+          {genres.map((g) => (
+            <li key={g}>{g}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
